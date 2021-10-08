@@ -21,7 +21,7 @@ def main():
         '-t', '--template', help='Which template has to be copied to the directory.')
 
     parser.add_argument(
-        '-L', '--list', help='List all available tenplates', action='store_true'
+        '-L', '--list', help='List all available templates', action='store_true'
     )
 
     args = parser.parse_args()
