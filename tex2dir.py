@@ -36,11 +36,26 @@ def main():
 
 
 def directory_is_valid(folder_path: str) -> bool:
+    """directory_is_valid checks if a directory is a valid template directory.
+    A directory is valid if "template_data.json" file is inside.
+
+    Args:
+        folder_path (str)
+
+    Returns:
+        bool
+    """
     target_file = os.path.join(folder_path, "template_data.json")
     return os.path.exists(target_file)
 
 
 def get_templates_directories() -> List[str]:
+    """get_templates_directories gets all directories in specified templates
+    directory, and filters only valid template directories.
+
+    Returns:
+        List[str]: valid directories paths.
+    """
     folders_in_template_directory = [os.path.join(TEMPLATES_DIR, folder)
                                      for folder in os.listdir(TEMPLATES_DIR)
                                      if os.path.isdir(os.path.join(TEMPLATES_DIR, folder))]
@@ -53,18 +68,37 @@ def get_templates_directories() -> List[str]:
 
 
 def import_template(template_path: str, target_path: str):
+    """import_template copies template to a specified path.
+
+    Args:
+        template_path (str)
+        target_path (str)
+    """
     copy_tree(template_path, target_path)
     print("Template imported successfully!")
 
 
 def get_template_data(template_path: str) -> Dict:
+    """get_template_data reads template data.
+
+    Args:
+        template_path (str)
+
+    Returns:
+        Dict: JSON parsed to dictionary.
+    """
     with open(os.path.join(template_path, 'template_data.json')) as d:
         template_data = json.load(d)
 
     return template_data
 
 
-def list_templates():
+def list_templates() -> List[Dict]:
+    """list_templates reads all templates data.
+
+    Returns:
+        List[Dict]: all templates data listed as dictionaries.
+    """
     directories = get_templates_directories()
     templates_data = []
 
@@ -74,6 +108,8 @@ def list_templates():
 
 
 def print_templates():
+    """print_templates prints all available templates data in a human readable way.
+    """
     templates_data = list_templates()
     print(f'{"Short name":<20}{"Name":<30}Type')
     print('='*80)
@@ -82,7 +118,16 @@ def print_templates():
             f'{template["short_name"]:<20}{template["name"]:<30}{template["type"]}')
 
 
-def get_template_path(template_short_name):
+def get_template_path(template_short_name: str) -> str:
+    """get_template_path iterates over all template directories searching the
+    specified template.
+
+    Args:
+        template_short_name (str)
+
+    Returns:
+        str: target template path.
+    """
     for directory in get_templates_directories():
         short_name = get_template_data(directory)['short_name']
         if template_short_name == short_name:
