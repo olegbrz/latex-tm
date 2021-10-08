@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import argparse
 from typing import Dict, List
 from distutils.dir_util import copy_tree
@@ -19,7 +20,21 @@ def main():
     parser.add_argument(
         '-t', '--template', help='Which template has to be copied to the directory.')
 
+    parser.add_argument(
+        '-L', '--list', help='List all available tenplates', action='store_true'
+    )
+
     args = parser.parse_args()
+
+    print(args)
+
+    if args.list:
+        print_templates()
+    elif args.template and args.path:
+        target_template_path = get_template_path(args.template)
+        import_template(target_template_path, os.path.abspath(args.path))
+    else:
+        parser.print_help(sys.stderr)
 
 
 def directory_is_valid(folder_path: str) -> bool:
