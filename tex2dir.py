@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from io import DEFAULT_BUFFER_SIZE
 import os
 import sys
 import argparse
@@ -9,13 +10,19 @@ import json
 
 TEMPLATES_DIR = ""
 
+DEFAULT_TEMPLATE_DATA = {
+    "name": "",
+    "short_name": "",
+    "type": ""
+}
+
 
 def main():
     parser = argparse.ArgumentParser(prog='tex2dir',
                                      description='Copy LaTeX templates to desired directory.')
 
     parser.add_argument(
-        '-p', '--path', help='Target directory of LaTeX template.')
+        '-p', '--path', help='Target directory of LaTeX template. Defaults to current working directory.', default=os.path.abspath(os.getcwd()))
 
     parser.add_argument(
         '-t', '--template', help='Which template has to be copied to the directory.')
@@ -24,11 +31,18 @@ def main():
         '-L', '--list', help='List all available templates', action='store_true'
     )
 
+    parser.add_argument(
+        '-I', '--init', help='Initializes a directory as LaTeX template (generates JSON data file that you will have to fill).',
+        action='store_true'
+    )
+
     args = parser.parse_args()
 
-    if args.list:
+    if args.init:
+        init_directory(args.path)
+    elif args.list:
         print_templates()
-    elif args.template and args.path:
+    elif args.template:
         target_template_path = get_template_path(args.template)
         import_template(target_template_path, os.path.abspath(args.path))
     else:
@@ -132,6 +146,12 @@ def get_template_path(template_short_name: str) -> str:
         short_name = get_template_data(directory)['short_name']
         if template_short_name == short_name:
             return directory
+
+
+def init_directory(directory_path: str):
+    with open(directory_path + "/template_data.json", "w") as td:
+        json.dump(DEFAULT_TEMPLATE_DATA, td)
+    print('Template initialized successfully. Please, fill "template_data.json" file.')
 
 
 if __name__ == '__main__':
