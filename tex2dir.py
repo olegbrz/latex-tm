@@ -26,8 +26,6 @@ def main():
 
     args = parser.parse_args()
 
-    print(args)
-
     if args.list:
         print_templates()
     elif args.template and args.path:
@@ -56,6 +54,7 @@ def get_templates_directories() -> List[str]:
 
 def import_template(template_path: str, target_path: str):
     copy_tree(template_path, target_path)
+    print("Template imported successfully!")
 
 
 def get_template_data(template_path: str) -> Dict:
