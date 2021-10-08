@@ -10,30 +10,34 @@ import json
 
 TEMPLATES_DIR = ""
 
-DEFAULT_TEMPLATE_DATA = {
-    "name": "",
-    "short_name": "",
-    "type": ""
-}
+DEFAULT_TEMPLATE_DATA = {"name": "", "short_name": "", "type": ""}
 
 
 def main():
-    parser = argparse.ArgumentParser(prog='tex2dir',
-                                     description='Copy LaTeX templates to desired directory.')
-
-    parser.add_argument(
-        '-p', '--path', help='Target directory of LaTeX template. Defaults to current working directory.', default=os.path.abspath(os.getcwd()))
-
-    parser.add_argument(
-        '-t', '--template', help='Which template has to be copied to the directory.')
-
-    parser.add_argument(
-        '-L', '--list', help='List all available templates', action='store_true'
+    parser = argparse.ArgumentParser(
+        prog="tex2dir", description="Copy LaTeX templates to desired directory."
     )
 
     parser.add_argument(
-        '-I', '--init', help='Initializes a directory as LaTeX template (generates JSON data file that you will have to fill).',
-        action='store_true'
+        "-p",
+        "--path",
+        help="Target directory of LaTeX template. Defaults to current working directory.",
+        default=os.path.abspath(os.getcwd()),
+    )
+
+    parser.add_argument(
+        "-t", "--template", help="Which template has to be copied to the directory."
+    )
+
+    parser.add_argument(
+        "-L", "--list", help="List all available templates", action="store_true"
+    )
+
+    parser.add_argument(
+        "-I",
+        "--init",
+        help="Initializes a directory as LaTeX template (generates JSON data file that you will have to fill).",
+        action="store_true",
     )
 
     args = parser.parse_args()
@@ -70,13 +74,16 @@ def get_templates_directories() -> List[str]:
     Returns:
         List[str]: valid directories paths.
     """
-    folders_in_template_directory = [os.path.join(TEMPLATES_DIR, folder)
-                                     for folder in os.listdir(TEMPLATES_DIR)
-                                     if os.path.isdir(os.path.join(TEMPLATES_DIR, folder))]
+    folders_in_template_directory = [
+        os.path.join(TEMPLATES_DIR, folder)
+        for folder in os.listdir(TEMPLATES_DIR)
+        if os.path.isdir(os.path.join(TEMPLATES_DIR, folder))
+    ]
 
     # Filter only valid directories (with template_data.json file inside)
     template_folders_paths = list(
-        filter(directory_is_valid, folders_in_template_directory))
+        filter(directory_is_valid, folders_in_template_directory)
+    )
 
     return template_folders_paths
 
@@ -101,7 +108,7 @@ def get_template_data(template_path: str) -> Dict:
     Returns:
         Dict: JSON parsed to dictionary.
     """
-    with open(os.path.join(template_path, 'template_data.json')) as d:
+    with open(os.path.join(template_path, "template_data.json")) as d:
         template_data = json.load(d)
 
     return template_data
@@ -122,14 +129,12 @@ def list_templates() -> List[Dict]:
 
 
 def print_templates():
-    """print_templates prints all available templates data in a human readable way.
-    """
+    """print_templates prints all available templates data in a human readable way."""
     templates_data = list_templates()
     print(f'{"Short name":<20}{"Name":<30}Type')
-    print('='*80)
+    print("=" * 80)
     for template in templates_data:
-        print(
-            f'{template["short_name"]:<20}{template["name"]:<30}{template["type"]}')
+        print(f'{template["short_name"]:<20}{template["name"]:<30}{template["type"]}')
 
 
 def get_template_path(template_short_name: str) -> str:
@@ -143,7 +148,7 @@ def get_template_path(template_short_name: str) -> str:
         str: target template path.
     """
     for directory in get_templates_directories():
-        short_name = get_template_data(directory)['short_name']
+        short_name = get_template_data(directory)["short_name"]
         if template_short_name == short_name:
             return directory
 
@@ -154,5 +159,5 @@ def init_directory(directory_path: str):
     print('Template initialized successfully. Please, fill "template_data.json" file.')
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
