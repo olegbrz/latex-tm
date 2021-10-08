@@ -9,7 +9,7 @@ LaTeX TM aims to solve this problem. All you need to do is to save all templates
 To use the script, just save it in `/usr/local/bin` and give it execution permissions:
 
 ```bash
-chmod +x ./tex2dir.py
+sudo chmod +x ./tex2dir.py
 ```
 
 To see the help, just type:
@@ -28,4 +28,22 @@ optional arguments:
                         Which template has to be copied to the directory.
   -L, --list            List all available templates
   -I, --init            Initializes a directory as LaTeX template (generates JSON data file that you will have to fill).
+```
+
+### Template data file
+
+Each template directory must have a `template_data.json` file. You can create the file manually, or just type:
+
+```bash
+tex2dir --init [--path <path>]
+```
+
+This will create the `json` file that will have the following contents:
+
+```json
+{
+    "name": "Template name",
+    "short_name": "short_name identifier for the script",
+    "type": "A4, beamer, etc..."
+}
 ```
