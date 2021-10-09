@@ -4,6 +4,21 @@ When using LaTeX to write documents, most people usually have templates to reuse
 
 LaTeX TM aims to solve this problem. All you need to do is to save all templates in a folder, each one with a metadata file. This script will parse the folder for templates and simplify the process of importing the template into a desired folder.
 
+## Installation
+
+To use the script, you can install it in `usr/local/bin` folder, you can perform this automatically with:
+
+```bash
+sudo ./install.sh
+```
+
+To check if the script was installed, just type:
+
+```bash
+tex2dir -h
+```
+
+If the usage help appears, the script was installed successfully.
 ## Usage
 
 To use the script, just save it in `/usr/local/bin` and give it execution permissions:
