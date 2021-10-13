@@ -96,6 +96,7 @@ def import_template(template_path: str, target_path: str):
         target_path (str)
     """
     copy_tree(template_path, target_path)
+    os.remove(target_path + "/template_data.json")
     print("Template imported successfully!")
 
 
