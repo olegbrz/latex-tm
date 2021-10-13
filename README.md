@@ -19,6 +19,7 @@ tex2dir -h
 ```
 
 If the usage help appears, the script was installed successfully.
+
 ## Usage
 
 To use the script, just save it in `/usr/local/bin` and give it execution permissions:
