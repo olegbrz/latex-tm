@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
-from io import DEFAULT_BUFFER_SIZE
+import argparse
+import json
 import os
 import sys
-import argparse
-from typing import Dict, List
 from distutils.dir_util import copy_tree
-import json
+from typing import Dict, List
 
 TEMPLATES_DIR = ""
 
